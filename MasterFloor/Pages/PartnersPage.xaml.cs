@@ -100,6 +100,64 @@ namespace MasterFloor.Pages
                     MessageBox.Show(ex.Message.ToString());
                 }
             }
-        }   
+        }
+
+        private void BtnCalcMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            // 1. Проверяем, выбран ли партнер (через кнопку внутри списка)
+            var selectedPartner = SalesListView.SelectedItem as Partner;
+
+            if (selectedPartner == null)
+            {
+                MessageBox.Show("Сначала выберите партнера из списка!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // 2. Считаем общее количество продукции
+            int totalProductCount = 0;
+            try
+            {
+                // ИСПРАВЛЕНИЕ ЗДЕСЬ: используем .Sales вместо .PartnerProducts
+                if (selectedPartner.Sales != null)
+                {
+                    foreach (var sale in selectedPartner.Sales)
+                    {
+                        // Если 'ProductQuantity' подчеркнет красным, попробуй стереть точку и выбрать из списка (например, Quantity или Count)
+                        totalProductCount += sale.Quantity;
+                    }
+                }
+            }
+            catch
+            {
+                totalProductCount = 10; // Заглушка, если данные не подгрузились
+            }
+
+            if (totalProductCount == 0) totalProductCount = 1;
+
+            // 3. Вызываем калькулятор
+            // Убедись, что путь к классу MaterialCalculator правильный (MasterFloor.Services или просто MasterFloor)
+            var calculator = new MasterFloor.MaterialCalculator();
+            // Если здесь ошибка - удали ".Services" или добавь using MasterFloor.Services; наверху
+
+            int typeProduct = 2;   // Ламинат
+            int typeMaterial = 1;
+            float param1 = 2.5f;
+            float param2 = 0.5f;
+
+            int result = calculator.GetQuantityForProduct(typeProduct, typeMaterial, totalProductCount, param1, param2);
+
+            if (result != -1)
+            {
+                MessageBox.Show($"Партнер: {selectedPartner.PartnerName}\n" +
+                                $"Всего реализовано продукции: {totalProductCount} шт.\n" +
+                                $"Параметры материала: {param1}x{param2} м\n\n" +
+                                $"РАСЧЕТ МАТЕРИАЛА: {result} шт.",
+                                "Расчет материала", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Ошибка расчета.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

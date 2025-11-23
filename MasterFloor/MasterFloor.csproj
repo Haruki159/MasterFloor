@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager.cs" />
+    <Compile Include="MaterialCalculator.cs" />
     <Compile Include="Pages\AddEditPartnerPage.xaml.cs">
       <DependentUpon>AddEditPartnerPage.xaml</DependentUpon>
     </Compile>

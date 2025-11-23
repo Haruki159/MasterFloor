@@ -78,6 +78,9 @@
             </ListView>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Рассчитать материал (Тест)" 
+        Click="BtnCalcMaterial_Click" 
+        Width="200" Height="30" Margin="5" HorizontalAlignment="Left"/>
             <Button Name="BtnAdd" Content="Добавить" Width="100" Margin="5" Click="BtnAdd_Click"/>
             <Button Name="BtnEdit" Content="Редактировать" Width="100" Margin="5" Click="BtnEdit_Click"/>
             <Button Name="BtnDelete" Content="Удалить" Width="100" Margin="5" Click="BtnDelete_Click"/>
